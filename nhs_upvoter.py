@@ -30,7 +30,7 @@ def analyze_and_upvote(post):
     if sentiment["compound"] > 0.5:
         post.upvote()
         # Print upvoted post plus a timestamp
-        print(f"[+]Upvoted post: {post.title} at {datetime.datetime.now()}")
+        print(f"[+]Upvoted post at {datetime.datetime.now()}")
     else:
         print(f"[-]Post not upvoted: {post.title}")
 
