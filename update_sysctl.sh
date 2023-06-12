@@ -3,6 +3,12 @@
 # Path to the tweaks file
 tweaks_file="tweaks.sysctl"
 
+# Check if dry-run flag is invoked
+dry_run=false
+if [ "$1" == "--dry-run" ]; then
+    dry_run=true
+fi
+
 # Read the tweaks from the file
 while IFS= read -r line; do
   # Skip empty lines and comments starting with #
@@ -19,30 +25,26 @@ while IFS= read -r line; do
     old_value=$(sysctl -n "$parameter")
 
     # Display the dry run information
-    echo "Dry run: $parameter = $value (Old: $old_value)"
-
-    # Apply the tweak only if not in dry run mode
-    if [ "$1" != "--dry-run" ]; then
-      # Apply the tweak
-      sysctl -w "$parameter=$value"
-
-      # Check if the tweak was applied successfully
-      if [ $? -eq 0 ]; then
-        echo "Applied tweak: $parameter = $value (Old: $old_value)"
-      else
-        echo "Failed to apply tweak: $parameter = $value"
-      fi
-
-      # Create or update the custom configuration file
-      echo "$parameter = $value" | sudo tee -a /etc/sysctl.d/99-custom-tweaks.conf > /dev/null
+    if [ "$dry_run" = true ]; then
+        echo "Dry run: $parameter = $value (Old: $old_value)"
+    else
+        # Apply the tweak
+        if sysctl -w "$parameter=$value" > /dev/null 2>&1; then
+            echo "Applied tweak: $parameter = $value (Old: $old_value)"
+            # Create or update the sysctl configuration file
+            echo "$parameter = $value" | sudo tee -a /etc/sysctl.conf > /dev/null
+        else
+            echo "Failed to apply tweak: $parameter = $value"
+        fi
     fi
   fi
 done < "$tweaks_file"
 
-# Notify the user if changes will be made persistent
-if [ -f "/etc/sysctl.d/99-custom-tweaks.conf" ]; then
-  echo "Tweaks have been applied and will be persistent across reboots."
-else
-  echo "Tweaks could not be applied. Please check the tweaks file and try again."
+if [ "$dry_run" = false ]; then
+    # Load new settings
+    if sudo sysctl -p; then
+        echo "Tweaks have been applied and will be persistent across reboots."
+    else
+        echo "Failed to load new settings. Please check the tweaks file and try again."
+    fi
 fi
-
