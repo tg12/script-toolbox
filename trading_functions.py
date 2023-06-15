@@ -1,3 +1,75 @@
+""" def get_profit_loss(position):
+    try:
+        deal_size = float(position["position"]["dealSize"])
+        if position["position"]["direction"] == "SELL":
+            return (float(position["position"]["openLevel"]) -
+                    float(position["market"]["offer"])) * deal_size
+        else:
+            return (float(position["market"]["bid"]) -
+                    float(position["position"]["openLevel"])) * deal_size
+    except Exception as e:
+        logging.error("Error calculating profit/loss: %s", e)
+        return None
+
+
+def close_trade(base_url, position, delete_headers):
+    try:
+        deal_id = position["position"]["dealId"]
+        deal_size = str(position["position"]["dealSize"])
+        close_direction = "BUY" if position["position"]["direction"] == "SELL" else "SELL"
+        base_url = base_url + "/positions/otc"
+        data = {
+            "dealId": deal_id,
+            "size": deal_size,
+            "orderType": "MARKET",
+            "direction": close_direction,
+        }
+        response = requests.post(
+            base_url,
+            data=json.dumps(data),
+            headers=delete_headers)
+        if response.status_code != 200:
+            logging.error(
+                "Failed to close deal %s. Reason: %s",
+                deal_id,
+                response.text)
+            return None
+        return response.json()["dealReference"]
+    except Exception as e:
+        logging.error("Error closing trade: %s", e)
+        return None
+
+
+def close_all_trades(authenticated_headers, base_url, delete_headers):
+    try:
+        positions_url = "https://demo-api.ig.com/gateway/deal/positions"
+
+        response = requests.get(positions_url, headers=authenticated_headers)
+        positions = response.json()["positions"]
+        for position in positions:
+            profit_loss = get_profit_loss(position)
+            # add guard close to check if trade is profitable, maybe??!!
+            if profit_loss is None:
+                continue
+            logging.info(
+                "Profit/Loss for deal %s is %s",
+                position["position"]["dealId"],
+                profit_loss)
+            deal_ref = close_trade(base_url, position, delete_headers)
+            if deal_ref is None:
+                continue
+            confirm_url = base_url + "/confirms/" + deal_ref
+            confirm_response = requests.get(
+                confirm_url, headers=authenticated_headers)
+            confirm_status = confirm_response.json()
+            logging.info("Closed deal %s with status: %s, reason: %s",
+                         position["position"]["dealId"],
+                         confirm_status["dealStatus"],
+                         confirm_status["reason"])
+    except Exception as e:
+        logging.error("Error closing all trades: %s", e)
+ """
+
 # def rolling_correlation(drawdown, price, window):
 #     """
 #     Calculate the rolling correlation between the natural gas drawdown trend and the price over a given window.
