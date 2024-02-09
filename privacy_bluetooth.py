@@ -1,3 +1,21 @@
+""" THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND
+NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE
+DISTRIBUTING THE SOFTWARE BE LIABLE FOR ANY DAMAGES OR OTHER LIABILITY,
+WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. """
+
+# -*- coding: utf-8 -*-
+# pylint: disable=C0116, W0621, W1203, C0103, C0301, W1201
+# C0116: Missing function or method docstring
+# W0621: Redefining name %r from outer scope (line %s)
+# W1203: Use % formatting in logging functions and pass the % parameters as arguments
+# C0103: Constant name "%s" doesn't conform to UPPER_CASE naming style
+# C0301: Line too long (%s/%s)
+# W1201: Specify string format arguments as logging function parameters
+
 """This script scans for nearby Bluetooth devices, storing information about them in a dataframe. 
 It calculates the distance to each device based on its RSSI (signal strength) and updates the dataframe as new devices are discovered 
 or existing devices are seen again. 
@@ -8,10 +26,6 @@ It then prints the dataframe to the screen, sorted by distance from the device r
 # Author: James Sawyer
 # Email: githubtools@jamessawyer.co.uk
 # Website: http://www.jamessawyer.co.uk/
-
-""" Disclaimer: This tool is not affiliated with or endorsed by DreyTek. Use of this tool is at your own risk.
-We are not responsible for any damage or data loss that may result from using this tool.
-Please make sure to backup your router settings before using this tool.  """
 
 import asyncio
 import datetime
