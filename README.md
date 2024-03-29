@@ -9,6 +9,11 @@ I would love to hear from you and discuss how these scripts and tools can be imp
 Added Reddit Shadowban Check 
 [reddit_shadowban_check.py](https://github.com/tg12/script-toolbox/blob/main/reddit_shadowban_check.py)
 
+Added Tech Company IP/ASN Summary
+
+[tech_companies_summary.txt](https://github.com/tg12/script-toolbox/blob/main/tech_companies_summary.txt)
+
+
 BTC address (Bitcoin) 3QjWqhQbHdHgWeYHTpmorP8Pe1wgDjJy54
 
 ![image](https://github.com/tg12/script-toolbox/assets/12201893/6588573b-dceb-437e-96d6-f742e789ebd6)
