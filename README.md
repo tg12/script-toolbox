@@ -6,11 +6,10 @@ I would love to hear from you and discuss how these scripts and tools can be imp
 
 ## Updates:
 
-Added Reddit Shadowban Check 
+- Added Reddit Shadowban Check 
 [reddit_shadowban_check.py](https://github.com/tg12/script-toolbox/blob/main/reddit_shadowban_check.py)
 
-Added Tech Company IP/ASN Summary
-
+- Added Tech Company IP/ASN Summary
 [tech_companies_summary.txt](https://github.com/tg12/script-toolbox/blob/main/tech_companies_summary.txt)
 
 
