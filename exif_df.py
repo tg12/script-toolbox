@@ -19,6 +19,11 @@ from PIL import Image
 from tabulate import tabulate
 
 
+# allows Pillow to open and manipulate images in the HEIF (i.e. HEIC) format
+from pillow_heif import register_heif_opener
+register_heif_opener()
+
+
 def extract_metadata(dir_path):
     """
     Extracts the metadata from all the image files in the specified directory and
@@ -50,8 +55,10 @@ def extract_metadata(dir_path):
                     gps_altitude_ref = exif_data['GPS'][piexif.GPSIFD.GPSAltitudeRef]
 
                     # Convert GPS latitude and longitude data to decimal degrees
-                    gps_latitude_decimal = gps_to_decimal(gps_latitude, gps_latitude_ref)
-                    gps_longitude_decimal = gps_to_decimal(gps_longitude, gps_longitude_ref)
+                    gps_latitude_decimal = gps_to_decimal(
+                        gps_latitude, gps_latitude_ref)
+                    gps_longitude_decimal = gps_to_decimal(
+                        gps_longitude, gps_longitude_ref)
 
                     metadata = {
                         'filename': file,
@@ -115,7 +122,8 @@ def gps_to_decimal(coord, ref):
     Returns:
         float: The GPS coordinates in decimal degrees.
     """
-    decimal = coord[0][0] / coord[0][1] + coord[1][0] / (60 * coord[1][1]) + coord[2][0] / (3600 * coord[2][1])
+    decimal = coord[0][0] / coord[0][1] + coord[1][0] / \
+        (60 * coord[1][1]) + coord[2][0] / (3600 * coord[2][1])
     if ref in ['S', 'W']:
         decimal *= -1
     return decimal
