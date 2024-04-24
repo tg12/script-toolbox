@@ -1,0 +1,15 @@
+<opml version="2.0">
+<body>
+	<outline text="Subscriptions" title="Subscriptions">
+
+		<outline xmlUrl='https://jumpshare.com/blog/feed/' />
+		<outline xmlUrl='https://blogs.windows.com/feed/' />
+		<outline xmlUrl='https://bills.parliament.uk/rss/allbills.rss' />
+		<outline xmlUrl='https://feeds.content.dowjones.io/public/rss/mw_realtimeheadlines' />
+		<outline xmlUrl='https://feeds.content.dowjones.io/public/rss/mw_bulletins' />
+		<outline xmlUrl='https://feeds.content.dowjones.io/public/rss/mw_marketpulse' />
+		<outline xmlUrl='https://feeds.content.dowjones.io/public/rss/mw_topstories' />
+
+	</outline>
+</body>
+</opml>
