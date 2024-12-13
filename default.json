@@ -1,0 +1,152 @@
+[
+    {
+        "distribution": "Angstrom",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "BalenaOS",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Yocto Project",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Tiny Core Linux",
+        "default_username": "tc",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Buildroot",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Photon OS",
+        "default_username": "root",
+        "default_password": "changeme"
+    },
+    {
+        "distribution": "Armbian",
+        "default_username": "root",
+        "default_password": "1234"
+    },
+    {
+        "distribution": "OpenWRT",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "LEDE",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "TorizonCore",
+        "default_username": "torizon",
+        "default_password": "torizon"
+    },
+    {
+        "distribution": "Volumio",
+        "default_username": "volumio",
+        "default_password": "volumio"
+    },
+    {
+        "distribution": "Moode Audio",
+        "default_username": "pi",
+        "default_password": "moodeaudio"
+    },
+    {
+        "distribution": "HassOS",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Jeedom",
+        "default_username": "root",
+        "default_password": "Mjeedom96"
+    },
+    {
+        "distribution": "FreePBX",
+        "default_username": "root",
+        "default_password": "admin"
+    },
+    {
+        "distribution": "Pi-hole",
+        "default_username": "admin",
+        "default_password": "user-created-during-setup"
+    },
+    {
+        "distribution": "NextCloudPi",
+        "default_username": "ncp",
+        "default_password": "ownyourbits"
+    },
+    {
+        "distribution": "IoT Core OS",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Alpine Linux IoT",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Nebula Linux",
+        "default_username": "nebula",
+        "default_password": "nebula"
+    },
+    {
+        "distribution": "Zynthian",
+        "default_username": "pi",
+        "default_password": "raspberry"
+    },
+    {
+        "distribution": "Snappy Ubuntu Core",
+        "default_username": "user-created-during-setup",
+        "default_password": "user-specified-during-setup"
+    },
+    {
+        "distribution": "MeshCentral",
+        "default_username": "admin",
+        "default_password": "meshpassword"
+    },
+    {
+        "distribution": "BalenaSound",
+        "default_username": "root",
+        "default_password": "no password (empty)"
+    },
+    {
+        "distribution": "Parrot Security OS",
+        "default_username": "user",
+        "default_password": "toor"
+    },
+    {
+        "distribution": "Slitaz",
+        "default_username": "tux",
+        "default_password": "root"
+    },
+    {
+        "distribution": "Puppy Linux",
+        "default_username": "root",
+        "default_password": "woofwoof"
+    },
+    {
+        "distribution": "DragonOS",
+        "default_username": "dragon",
+        "default_password": "dragon"
+    },
+    {
+        "distribution": "Cumulus Linux",
+        "default_username": "cumulus",
+        "default_password": "CumulusLinux!"
+    },
+    {
+        "distribution": "OpenMediaVault",
+        "default_username": "admin",
+        "default_password": "openmediavault"
+    }
+]
