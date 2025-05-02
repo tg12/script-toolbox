@@ -1,22 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# -----------------------------------------------------------------------------
-# build-linux-tkg-docker.sh
-#   1. Generates Dockerfile (no install step baked in)
-#   2. Builds image
-#   3. Launches container interactively and runs install.sh with prompts
-# -----------------------------------------------------------------------------
-
 # Configuration
 IMAGE_NAME="tkg-builder"
-OUT_DIR="$(pwd)/tkg-out"
-EXT_CFG_HOST="$(pwd)/linux-tkg.cfg"
-DOCKERFILE_HOST="$(pwd)/Dockerfile"
+SCRIPT_DIR="$(pwd)"
+OUT_DIR_HOST="$SCRIPT_DIR/tkg-out"
+EXT_CFG_HOST="$SCRIPT_DIR/linux-tkg.cfg"
+DOCKERFILE_HOST="$SCRIPT_DIR/Dockerfile"
 
 # 1) Write external linux-tkg config
 cat > "$EXT_CFG_HOST" <<EOF
-# linux-tkg external overrides:
+# external overrides for linux-tkg:
 _configfile="config.x86_64"
 _cpusched="muqss"
 _processor_opt="-march=native"
@@ -24,9 +18,9 @@ _noccache="false"
 _force_all_threads="true"
 EOF
 
-echo "✔ Wrote external config to $EXT_CFG_HOST"
+echo "Wrote external config to $EXT_CFG_HOST"
 
-# 2) Generate Dockerfile (without RUN install.sh)
+# 2) Generate Dockerfile
 cat > "$DOCKERFILE_HOST" <<'EOF'
 FROM gcc:latest
 
@@ -38,36 +32,61 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
       rsync schedtool wget zstd && \
     rm -rf /var/lib/apt/lists/*
 
-# Clone linux-tkg (shallow)
+# Shallow-clone linux-tkg
 RUN git clone --depth 1 https://github.com/Frogging-Family/linux-tkg.git /linux-tkg
 
-# Copy in your overrides and set env var
+# Copy in external config and set env var
 COPY linux-tkg.cfg /root/.config/frogminer/linux-tkg.cfg
 ENV _EXT_CONFIG_PATH=/root/.config/frogminer/linux-tkg.cfg
 
 WORKDIR /linux-tkg
-
-# Leave install.sh for runtime
 EOF
 
-echo "✔ Wrote Dockerfile to $DOCKERFILE_HOST"
+echo "Wrote Dockerfile to $DOCKERFILE_HOST"
 
 # 3) Build the Docker image
 docker build -t "$IMAGE_NAME" .
-echo "✔ Docker image built: $IMAGE_NAME"
+echo "Built Docker image: $IMAGE_NAME"
 
-# 4) Ensure output directory exists
-mkdir -p "$OUT_DIR"
-echo "✔ Host output dir ready: $OUT_DIR"
+# 4) Prepare host output directory
+mkdir -p "$OUT_DIR_HOST"
+echo "Host output directory ready: $OUT_DIR_HOST"
 
-# 5) Run the container interactively and invoke the installer
-echo
-echo "▶ Launching container; you’ll see linux-tkg’s prompts now…"
-echo
+# 5) Run the container interactively to build and export linux-src-git
+echo "Launching container for interactive build..."
+echo "  • In the prompts, choose 'Generic' and answer 'n' when asked to install inside the container."
 docker run --rm -it \
-  -v "$OUT_DIR":/out \
-  $IMAGE_NAME \
-  bash -c 'cd /linux-tkg && ./install.sh install && cp /usr/src/linux-tkg-*/build/*.deb /out/'
+  -v "$OUT_DIR_HOST":/out \
+  "$IMAGE_NAME" \
+  bash -euo pipefail -c '
+    cd /linux-tkg
+    ./install.sh install
+    cp -R linux-src-git /out/linux-src-git
+  '
 
-echo
-echo "Done! Your .deb packages are in: $OUT_DIR"
+# 6) On host: install the kernel
+SRC_DIR="$OUT_DIR_HOST/linux-src-git"
+if [ ! -d "$SRC_DIR" ]; then
+  echo "Error: build tree not found at $SRC_DIR" >&2
+  exit 1
+fi
+
+# Detect kernel version
+KVER=$(make -s -C "$SRC_DIR" kernelrelease)
+echo "Detected kernel version: $KVER"
+
+# Prepare /usr/src and remove old tree
+sudo mkdir -p /usr/src
+sudo rm -rf "/usr/src/linux-tkg-$KVER"
+
+# Copy build tree into place
+echo "Copying build tree to /usr/src/linux-tkg-$KVER"
+sudo cp -R "$SRC_DIR" "/usr/src/linux-tkg-$KVER"
+
+# Install modules and kernel
+echo "Installing modules and kernel..."
+cd "/usr/src/linux-tkg-$KVER"
+sudo make modules_install
+sudo make install
+
+echo "linux-tkg $KVER has been installed on your host."
