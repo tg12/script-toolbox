@@ -1,20 +1,24 @@
 # script-toolbox
 
-This repository contains a collection of scripts and tools that I have written to solve various problems that I have come across.
+This repo holds a set of scripts and tools I’ve built to solve real-world problems I've run into.
 
-I would love to hear from you and discuss how these scripts and tools can be improved or expanded to solve even more problems!
+Open to feedback, ideas, or improvements — especially if they help solve more of the messy stuff.
 
-## Updates:
+## Updates
 
-- Added Reddit Shadowban Check 
-[reddit_shadowban_check.py](https://github.com/tg12/script-toolbox/blob/main/reddit_shadowban_check.py)
+- **Reddit Shadowban Check**  
+  [reddit_shadowban_check.py](https://github.com/tg12/script-toolbox/blob/main/reddit_shadowban_check.py)
 
-- Added Tech Company IP/ASN Summary
-[tech_companies_summary.txt](https://github.com/tg12/script-toolbox/blob/main/tech_companies_summary.txt)
+- **Tech Company IP/ASN Summary**  
+  [tech_companies_summary.txt](https://github.com/tg12/script-toolbox/blob/main/tech_companies_summary.txt)
 
+- **Black Hole – Arcade-Style Python Game**  
+  A fast-paced game built with Pygame.  
+  [Reddit post](https://www.reddit.com/r/pygame/comments/1lh7if6/python_game_black_hole_a_fun_arcadestyle_game/)
 
-BTC address (Bitcoin) 3QjWqhQbHdHgWeYHTpmorP8Pe1wgDjJy54
+---
 
-![image](https://github.com/tg12/script-toolbox/assets/12201893/6588573b-dceb-437e-96d6-f742e789ebd6)
+If you found something useful, here's my BTC address:  
+`3QjWqhQbHdHgWeYHTpmorP8Pe1wgDjJy54`
 
-
+<img src="https://github.com/tg12/script-toolbox/assets/12201893/6588573b-dceb-437e-96d6-f742e789ebd6" alt="Bitcoin QR Code" width="150">
