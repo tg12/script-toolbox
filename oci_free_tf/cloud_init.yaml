@@ -1,0 +1,24 @@
+
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - fail2ban
+  - ufw
+  - htop
+  - net-tools
+  - curl
+runcmd:
+  - mkdir -p /mnt/persistent
+  - mkfs.ext4 /dev/oracleoci/oraclevdb
+  - mount /dev/oracleoci/oraclevdb /mnt/persistent
+  - echo '/dev/oracleoci/oraclevdb /mnt/persistent ext4 defaults,nofail 0 2' >> /etc/fstab
+  - ufw default deny incoming
+  - ufw default allow outgoing
+  - ufw allow 22/tcp
+  - ufw --force enable
+  - systemctl enable fail2ban
+  - sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+  - sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+  - systemctl restart sshd
+final_message: "Setup complete. Persistent volume mounted at /mnt/persistent."
