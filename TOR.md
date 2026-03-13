@@ -1,219 +1,186 @@
-# Practical Guide: Using Tor to Support People in Censored Environments
+# Tor Operational Guide
 
-This document explains how to correctly install, configure, and operate Tor in a way that helps people in heavily censored regions access information and communicate safely. The focus is operational reliability, anonymity hygiene, and supporting users in countries where governments actively block Tor.
+### Deployment, Use, and Influence Strategy
 
----
+This document explains how to deploy Tor correctly, how to support the Tor network, and how to operationally position it so others adopt it. The objective is not merely technical usage but **maximizing impact and adoption under surveillance or censorship conditions**.
 
-# 1. What Tor Actually Does
-
-Tor (The Onion Router) routes internet traffic through multiple volunteer-operated relays, encrypting it at each hop.
-
-Typical path:
-
-User → Guard Node → Relay Node → Exit Node → Internet
-
-Each node only knows the previous and next hop, never the full chain. This prevents surveillance systems from easily identifying both the user and their destination.
-
-Important implications:
-
-* ISPs cannot see what sites are visited.
-* Websites cannot see the user’s real IP.
-* Traffic analysis becomes significantly harder.
-* Government censorship systems struggle to block it when bridges are used.
-
-Tor is not magic anonymity. Operational mistakes defeat it.
+Tor is a decentralized anonymity network that routes encrypted traffic through multiple relays so no single node knows both origin and destination. The system separates identity from routing, making traffic correlation substantially harder. ([Wikipedia][1])
 
 ---
 
-# 2. Correct Way to Install Tor
+# 1. What Tor Actually Is
 
-Always use the official Tor Browser. Do not use random downloads or third-party builds.
+Tor uses a process called **onion routing**.
+
+Traffic path:
+
+```
+User
+ → Entry (Guard Node)
+ → Middle Relay
+ → Exit Relay
+ → Destination Website
+```
+
+Each hop only knows the previous and next node.
+
+Encryption layers:
+
+```
+Layer 3 – Exit node decrypts outer layer
+Layer 2 – Middle relay decrypts second layer
+Layer 1 – Guard node decrypts final routing instruction
+```
+
+Result:
+
+* Destination never sees the user's real IP
+* ISP cannot see the destination
+* Surveillance requires large-scale correlation attacks
+
+Tor reduces traceability; it does not eliminate all tracking risks.
+
+---
+
+# 2. The Real Power of Tor
+
+Tor is not simply a privacy browser.
+
+It is **infrastructure for resistance against surveillance systems**.
+
+Tor enables:
+
+* anonymous publishing
+* censorship bypass
+* whistleblower communication
+* mirror distribution of information
+* hidden services (.onion websites)
+
+Roughly tens of millions of users rely on it globally. ([Wikipedia][1])
+
+The system survives because:
+
+* it is distributed
+* relays are volunteer operated
+* traffic constantly changes paths
+* blocking it fully causes collateral damage
+
+---
+
+# 3. Installing Tor Correctly
+
+Use **Tor Browser only**.
 
 Official site:
 
-[https://www.torproject.org](https://www.torproject.org)
+```
+https://www.torproject.org
+```
 
-## Step-by-step
+Never download from mirrors unless verified.
 
-1. Go to the Tor Project website.
-2. Download **Tor Browser** for your platform:
+### Installation
 
-   * Windows
-   * macOS
-   * Linux
-   * Android
+Windows / macOS / Linux
 
-Avoid iOS unless necessary. Apple's restrictions limit Tor functionality.
+```
+1. Download Tor Browser
+2. Run installer
+3. Launch Tor Browser
+```
 
-3. Verify the download if possible.
-
-Advanced users should verify signatures using GPG to ensure the binary was not tampered with.
-
----
-
-# 3. First Launch
-
-When Tor Browser launches, two options appear:
+First launch screen:
 
 ```
 Connect
 Configure
 ```
 
-Most users should select **Connect**.
-
-If Tor is blocked in the country (Iran, Russia, China), select **Configure** and enable **bridges**.
+Select **Connect** unless the network blocks Tor.
 
 ---
 
-# 4. Bridges (Critical for Censored Countries)
+# 4. Circumventing Blocks (Bridges)
 
-Governments often block known Tor nodes.
+Many networks block known Tor relays.
 
-Bridges are secret entry nodes not publicly listed.
+Tor solves this using **bridges**.
 
-Tor includes several bridge systems:
+Bridges are **unlisted entry nodes** that bypass censorship systems. ([Support][2])
 
-### Built-in Bridges
-
-Open:
+Enable bridges:
 
 ```
-Settings → Connection → Bridges
+Tor Browser
+→ Settings
+→ Connection
+→ Bridges
 ```
 
-Enable:
-
-* obfs4
-* Snowflake
-* Meek
-
-Recommended order:
-
-1. **Snowflake** – best at bypassing censorship
-2. **obfs4** – stable fallback
-3. **Meek** – slower but harder to block
-
----
-
-# 5. Snowflake (Best Method for Helping Others)
-
-Snowflake works by routing traffic through volunteer proxy browsers.
-
-Normal internet users run Snowflake proxies which help censored users connect to Tor.
-
-To help:
-
-Install the Snowflake extension in your browser.
-
-Chrome / Firefox:
-
-[https://snowflake.torproject.org](https://snowflake.torproject.org)
-
-Once installed:
-
-Your browser becomes a temporary Tor bridge for censored users.
-
-Minimal impact on performance.
-
-Running Snowflake significantly improves access for users in Iran and similar regions.
-
----
-
-# 6. Safe Browsing Practices
-
-Tor protects network identity. It does not protect users from behavioural mistakes.
-
-Never do the following:
-
-* Log into personal accounts (Google, Facebook, etc.)
-* Use the same usernames as normal browsing
-* Download files and open them outside Tor
-* Enable browser plugins
-* Resize the Tor window (fingerprinting risk)
-
-Correct behaviour:
-
-* Use Tor only for Tor.
-* Keep activities compartmentalized.
-* Assume hostile surveillance exists.
-
----
-
-# 7. Security Levels
-
-Tor Browser allows three security levels:
+Bridge transports available:
 
 ```
-Standard
-Safer
-Safest
+Snowflake
+obfs4
+Meek
+WebTunnel
 ```
 
-For users in high-risk countries:
+Key properties:
 
-Use **Safer**.
+| Method    | Strategy                                          |
+| --------- | ------------------------------------------------- |
+| obfs4     | makes traffic look random                         |
+| Snowflake | routes through volunteer proxies                  |
+| Meek      | disguises traffic as major cloud provider traffic |
 
-It disables dangerous browser features that could leak identity.
+obfs4 specifically hides Tor signatures so scanning systems cannot easily identify it. ([Support][3])
 
 ---
 
-# 8. Mobile Usage
+# 5. Snowflake (The Most Important Tool)
 
-## Android
+Snowflake is the easiest way to help Tor users.
 
-Use:
+It uses **temporary browser proxies** operated by volunteers.
 
-**Tor Browser for Android**
+Your browser briefly forwards encrypted traffic for a blocked user.
 
-or
-
-**Orbot + Tor Browser**
-
-Orbot allows routing other apps through Tor.
-
-Example:
-
-Signal → Tor network
-Browser → Tor network
-
-Avoid unofficial Tor apps.
+Snowflake leverages WebRTC so the traffic resembles normal video calls, which are harder for censors to block without disrupting large parts of the internet. ([TechRadar][4])
 
 ---
 
-# 9. Advanced: Using Tails OS (Maximum Safety)
+### How to Run Snowflake
 
-Tails is a secure operating system that routes all traffic through Tor.
-
-Website:
-
-[https://tails.net](https://tails.net)
-
-Tails runs from a USB drive and leaves no traces on the computer.
-
-Usage flow:
+Install extension:
 
 ```
-Boot computer from USB
-→ Launch Tails
-→ Tor starts automatically
-→ All network traffic forced through Tor
+https://snowflake.torproject.org
 ```
 
-Advantages:
+Steps:
 
-* No local logs
-* Resistant to malware
-* Network isolation
-* Good for journalists and activists
+```
+1 Install extension
+2 Leave browser open
+3 Icon turns green when a user connects
+```
+
+Your system becomes a temporary proxy.
+
+No port forwarding required.
+
+Bandwidth usage is modest.
+
+Thousands of volunteers operate these proxies continuously. ([snowflake.torproject.org][5])
 
 ---
 
-# 10. Running a Tor Relay (Helping the Network)
+# 6. Advanced Support: Running a Tor Relay
 
-Advanced users can strengthen the Tor network by running relays.
+Relays increase network capacity and anonymity.
 
-Three types exist:
+Three relay types exist:
 
 ```
 Guard Relay
@@ -221,147 +188,303 @@ Middle Relay
 Exit Relay
 ```
 
-Recommended for most volunteers:
+Most volunteers should run **Middle Relays**.
 
-**Middle Relay**
+Advantages:
 
-This improves Tor capacity without legal complications associated with exit nodes.
+* increases anonymity set
+* no exit traffic liability
+* minimal legal risk
 
 Requirements:
 
-* Stable internet connection
-* 1–2 Mbps bandwidth minimum
-* Linux server preferred
+```
+1 stable server
+1–2 Mbps bandwidth minimum
+Linux preferred
+```
 
-Tor relay documentation:
+Documentation:
 
-[https://community.torproject.org/relay/](https://community.torproject.org/relay/)
+```
+community.torproject.org/relay
+```
 
 ---
 
-# 11. Avoiding Common Mistakes
+# 7. Maximum Security: Tails OS
 
-Most anonymity failures happen because of behaviour.
+Tor Browser protects traffic.
+
+Tails protects the **entire operating system**.
+
+Tails characteristics:
+
+```
+Live OS from USB
+All traffic forced through Tor
+No local disk traces
+Memory wiped on shutdown
+```
+
+Usage:
+
+```
+1 Download Tails
+2 Flash to USB
+3 Boot computer from USB
+4 Tor starts automatically
+```
+
+Tails is used by:
+
+* journalists
+* activists
+* whistleblowers
+
+---
+
+# 8. Operational Security Rules
+
+Most anonymity failures come from behaviour, not technology.
 
 Critical rules:
 
-Never mix identities.
+### Never mix identities
 
-Bad:
+Bad example:
 
 ```
-Normal browser → Gmail
-Tor → same Gmail
+Normal browser → personal email
+Tor browser → same email
 ```
 
 Correlation becomes trivial.
 
-Never open downloaded PDFs or Office documents while online. These can leak IP addresses.
+---
 
-If documents must be opened:
+### Never install extensions
+
+Extensions fingerprint the browser.
+
+Tor intentionally standardizes fingerprint to prevent tracking.
+
+---
+
+### Never open documents online
+
+Documents can contact external servers.
+
+Safe method:
 
 ```
-Disconnect internet
-Open file
-Reconnect afterwards
+1 Download document
+2 Disconnect internet
+3 Open file
 ```
 
 ---
 
-# 12. Detecting When Tor is Blocked
+### Never resize Tor window
 
-Signs:
+Window size fingerprinting can identify users.
 
-* Tor stuck at "Connecting to Tor Network"
-* Bridges fail repeatedly
-* Snowflake cannot establish connections
-
-Solutions:
-
-Switch bridge type:
-
-```
-Snowflake → obfs4 → Meek
-```
-
-or request fresh bridges from:
-
-[https://bridges.torproject.org](https://bridges.torproject.org)
+Tor uses standardized window dimensions.
 
 ---
 
-# 13. Threat Model Awareness
+# 9. Psychological Barrier to Adoption
 
-Different users face different threats.
+Technology alone does not spread tools.
 
-Basic censorship bypass
-Low risk.
+Adoption follows psychological patterns.
 
-Journalists or activists
-Moderate risk.
+Three forces drive people toward privacy tools:
 
-Political dissidents in authoritarian states
-High risk.
+## 1 Fear of surveillance
 
-At higher threat levels:
+People adopt anonymity when they believe observation exists.
 
-Use:
+Messaging should emphasize:
 
-* Tails OS
-* Bridges
-* Secure messaging (Signal)
-* Operational compartmentalization
+* data harvesting
+* profiling
+* algorithmic monitoring
 
 ---
 
-# 14. Supporting People in Iran or Similar Regions
+## 2 Loss of control
 
-The most effective actions:
+Individuals react strongly when they feel information is being manipulated.
 
-1. Run a **Snowflake proxy**
-2. Share **bridge addresses**
-3. Mirror blocked information on Tor onion services
-4. Educate users about operational security
-
-The weakest link in anonymity systems is usually user behaviour, not the technology.
-
----
-
-# 15. Onion Services
-
-Websites can exist entirely inside Tor.
-
-Example format:
+Framing examples:
 
 ```
-exampleonionaddress.onion
+Search results are filtered
+News feeds are curated
+Platforms decide what you see
+```
+
+Tor restores information independence.
+
+---
+
+## 3 Exclusivity
+
+People adopt tools perceived as:
+
+* restricted
+* elite
+* difficult
+
+Position Tor as a **tool used by journalists, intelligence analysts, and security researchers**.
+
+Not as a casual browser.
+
+---
+
+# 10. Practical Messaging Strategy
+
+Language that spreads privacy tools:
+
+Weak messaging:
+
+```
+Tor helps privacy online
+```
+
+Strong messaging:
+
+```
+Your ISP records every site you visit.
+Tor is the only mainstream browser that removes that visibility.
+```
+
+Weak messaging:
+
+```
+Tor protects anonymity
+```
+
+Strong messaging:
+
+```
+Without Tor, your IP address is your identity online.
+```
+
+Adoption increases when risk becomes visible.
+
+---
+
+# 11. Common Failures in Tor Use
+
+Most users fail through:
+
+```
+Account reuse
+Document leaks
+Browser fingerprinting
+Operational mistakes
+```
+
+Technology is rarely the weakest link.
+
+Human behaviour is.
+
+---
+
+# 12. Strategic Ways to Help the Tor Network
+
+High impact actions:
+
+```
+Run Snowflake proxy
+Run middle relay
+Educate users about bridges
+Host onion mirrors
+```
+
+Lower impact actions:
+
+```
+casual Tor browsing
+```
+
+Network strength increases when more relays exist.
+
+---
+
+# 13. Onion Services
+
+Tor allows fully anonymous websites.
+
+Format:
+
+```
+exampleaddress.onion
 ```
 
 Advantages:
 
-* Server location hidden
-* Hard to censor
-* No exit node exposure
+```
+server location hidden
+no DNS
+no exit node exposure
+censorship resistant
+```
 
-Organizations often host:
+Used for:
 
-* secure dropboxes
-* whistleblower platforms
-* mirrored news sites
+```
+secure dropboxes
+journalism sources
+mirror sites
+anonymous communication platforms
+```
 
 ---
 
-# 16. Final Operational Principles
+# 14. Realistic Threat Model
 
-Tor works when users follow strict discipline.
+Tor protects against:
 
-Core rules:
+```
+ISP monitoring
+IP tracking
+basic surveillance
+geographic censorship
+```
 
-Isolation
-Consistency
-Minimal identity exposure
-No account reuse
-No plugins or extensions
-No document opening online
+Tor does **not automatically protect against**:
 
-Anonymity failures almost always come from behavioural mistakes rather than technical weaknesses.
+```
+malware
+operational mistakes
+account correlation
+endpoint compromise
+```
+
+Security requires discipline.
+
+---
+
+# 15. Core Principles
+
+Tor works when these rules are followed:
+
+```
+Identity isolation
+Minimal personal data
+Consistent operational behaviour
+No cross-account activity
+```
+
+Anonymity systems fail when users break these principles.
+
+---
+
+[1]: https://en.wikipedia.org/wiki/Tor_%28network%29 "Tor (network)"
+[2]: https://support.torproject.org/little-t-tor/circumvention/using-bridges/ "Using Bridges - Circumvention - Tor"
+[3]: https://support.torproject.org/tor-browser/circumvention/unblocking-tor/ "Unblocking Tor - Censorship circumvention - Tor Browser"
+[4]: https://www.techradar.com/vpn/vpn-privacy-security/iranians-are-resilient-they-always-find-ways-to-speak-how-iranians-are-overcoming-unprecedented-internet-censorship "'Iranians are resilient; they always find ways to speak:' How Iranians are overcoming unprecedented internet censorship"
+[5]: https://snowflake.torproject.org/ "Snowflake - Tor"
