@@ -22,3 +22,13 @@ If you found something useful, here's my BTC address:
 `3QjWqhQbHdHgWeYHTpmorP8Pe1wgDjJy54`
 
 <img src="https://github.com/tg12/script-toolbox/assets/12201893/6588573b-dceb-437e-96d6-f742e789ebd6" alt="Bitcoin QR Code" width="150">
+
+## Support
+
+If you find this project useful, consider supporting it:
+
+| Currency | Address |
+|----------|---------|
+| **Bitcoin (BTC)** | `3QjWqhQbHdHgWeYHTpmorP8Pe1wgDjJy54` |
+| **Ethereum (ETH)** | `0x5851e6145F4773d1585b8686095FB16E368a4dA1` |
+| **ZCash (ZEC)** | `t1KSR5YkNPbjqRSCoLKo5AddFWdm9Kzxh1B` |
